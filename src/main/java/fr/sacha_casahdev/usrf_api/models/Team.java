@@ -1,5 +1,10 @@
 package fr.sacha_casahdev.usrf_api.models;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class Team {
     private int id = 0;
     private int fff_id = 0;
@@ -14,36 +19,4 @@ public class Team {
     }
 
     public Team() {}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getFff_id() {
-        return fff_id;
-    }
-
-    public void setFff_id(int fff_id) {
-        this.fff_id = fff_id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Club getClub() {
-        return club;
-    }
-
-    public void setClub(Club club) {
-        this.club = club;
-    }
 }

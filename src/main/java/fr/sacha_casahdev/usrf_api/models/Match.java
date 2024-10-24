@@ -20,4 +20,22 @@ public class Match {
     private GameState state = GameState.notStarted;
     private Time started_time = null;
     private boolean is_cup;
+
+    public Match() {
+    }
+
+    public Match(int id, Team team, Team opponent, int score, int opponent_score, String address, Time date, boolean is_home, String coach, GameState state, Time started_time, boolean is_cup) {
+        this.id = id;
+        this.team = team;
+        this.opponent = opponent;
+        this.score = score;
+        this.opponent_score = opponent_score;
+        this.address = address;
+        this.date = date;
+        this.is_home = is_home;
+        this.coach = coach;
+        this.state = state;
+        this.started_time = started_time;
+        this.is_cup = is_cup;
+    }
 }

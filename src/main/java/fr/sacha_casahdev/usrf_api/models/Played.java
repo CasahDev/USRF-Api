@@ -23,4 +23,25 @@ public class Played {
     private boolean is_injured = false;
     private boolean is_capitain = false;
     private Positions position = Positions.Substitute;
+
+    public Played() {
+    }
+
+    public Played(int id, Match match, Player player, int jersey_number, Time entry_time, Time exit_time, int goals, int blocked_shots, int on_target_shots, int off_target_shots, boolean yellow_card, boolean red_card, boolean is_injured, boolean is_capitain, Positions position) {
+        this.id = id;
+        this.match = match;
+        this.player = player;
+        this.jersey_number = jersey_number;
+        this.entry_time = entry_time;
+        this.exit_time = exit_time;
+        this.goals = goals;
+        this.blocked_shots = blocked_shots;
+        this.on_target_shots = on_target_shots;
+        this.off_target_shots = off_target_shots;
+        this.yellow_card = yellow_card;
+        this.red_card = red_card;
+        this.is_injured = is_injured;
+        this.is_capitain = is_capitain;
+        this.position = position;
+    }
 }

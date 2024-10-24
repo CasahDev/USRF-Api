@@ -22,10 +22,6 @@ public class MatchHistory {
         this.additional_information = additional_information;
     }
 
-    public MatchHistory(Match match, MatchEvent event, Time time, String additional_information) {
-        this.match = match;
-        this.event = event;
-        this.time = time;
-        this.additional_information = additional_information;
+    public MatchHistory() {
     }
 }
