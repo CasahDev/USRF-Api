@@ -7,7 +7,7 @@ import java.sql.Time;
 
 @Getter
 @Setter
-public class Assist {
+public class Assist implements IJsonable {
     public int id = 0;
     public Played player = null;
     public Played assisted_player = null;
@@ -22,5 +22,16 @@ public class Assist {
         this.assisted_player = assisted_player;
         this.assist_time = assist_time;
         this.assist_type = assist_type;
+    }
+
+    @Override
+    public String toJson() {
+        return "{" +
+                "\"id\":" + id + "," +
+                "\"player\":" + player.toJson() + "," +
+                "\"assisted_player\":" + assisted_player.toJson() + "," +
+                "\"assist_time\":\"" + assist_time + "\"," +
+                "\"assist_type\":\"" + assist_type + "\"" +
+                "}";
     }
 }

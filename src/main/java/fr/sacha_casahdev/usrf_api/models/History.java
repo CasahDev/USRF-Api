@@ -7,7 +7,7 @@ import java.sql.Time;
 
 @Getter
 @Setter
-public class History {
+public class History implements IJsonable{
     private int id = 0;
     private User author = null;
     private Time created_at = null;
@@ -22,5 +22,16 @@ public class History {
         this.created_at = created_at;
         this.action = action;
         this.additional_information = additional_information;
+    }
+
+    @Override
+    public String toJson() {
+        return "{" +
+                "\"id\":" + id +
+                ", \"author\":" + author.toJson() +
+                ", \"created_at\":\"" + created_at + "\"" +
+                ", \"action\":\"" + action + "\"" +
+                ", \"additional_information\":\"" + additional_information + "\"" +
+                "}";
     }
 }

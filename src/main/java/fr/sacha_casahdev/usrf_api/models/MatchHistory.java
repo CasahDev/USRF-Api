@@ -7,7 +7,8 @@ import java.sql.Time;
 
 @Getter
 @Setter
-public class MatchHistory {
+public class MatchHistory implements IJsonable {
+
     private int id = 0;
     private Match match = null;
     private MatchEvent event = null;
@@ -23,5 +24,15 @@ public class MatchHistory {
     }
 
     public MatchHistory() {
+    }
+
+    @Override
+    public String toJson() {
+        return "{\"id\":" + id +
+                ",\"match\":" + match.toJson() +
+                ",\"event\":" + event.name() +
+                ",\"time\":\"" + time +
+                "\",\"additional_information\":\"" + additional_information +
+                "\"}";
     }
 }

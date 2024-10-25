@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class CanPlay {
+public class CanPlay implements IJsonable {
     private int id = 0;
     private Player player = null;
     private Positions position = null;
@@ -16,5 +16,10 @@ public class CanPlay {
     public CanPlay(Player player, Positions position) {
         this.player = player;
         this.position = position;
+    }
+
+    @Override
+    public String toJson() {
+        return "{\"id\":" + id + ",\"player\":" + player.toJson() + ",\"position\":" + position.name() + "}";
     }
 }

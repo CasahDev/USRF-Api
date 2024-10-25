@@ -7,8 +7,8 @@ import java.util.Date;
 
 @Setter
 @Getter
-public class User {
-    private String id = "";
+public class User implements IJsonable {
+    private int id = 0;
     private String email = "";
     private String first_name = "";
     private String last_name = "";
@@ -20,7 +20,7 @@ public class User {
 
     public User(){}
 
-    public User(String id, String email, String first_name, String last_name, String password, String salt, boolean is_admin, Date created_at, Club related_to){
+    public User(int id, String email, String first_name, String last_name, String password, String salt, boolean is_admin, Date created_at, Club related_to){
         this.id = id;
         this.email = email;
         this.first_name = first_name;
@@ -32,4 +32,16 @@ public class User {
         this.related_to = related_to;
     }
 
+    @Override
+    public String toJson() {
+        return "{" +
+                "\"id\":" + id +
+                ", \"email\":\"" + email + "\"" +
+                ", \"first_name\":\"" + first_name + "\"" +
+                ", \"last_name\":\"" + last_name + "\"" +
+                ", \"is_admin\":" + is_admin +
+                ", \"created_at\":\"" + created_at + "\"" +
+                ", \"related_to\":" + related_to.toJson() +
+                "}";
+    }
 }

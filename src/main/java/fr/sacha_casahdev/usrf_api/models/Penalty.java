@@ -7,7 +7,8 @@ import java.sql.Time;
 
 @Getter
 @Setter
-public class Penalty {
+public class Penalty implements IJsonable {
+
     private int id = 0;
     private Played player = null;
     private Time penalty_time = null;
@@ -22,5 +23,15 @@ public class Penalty {
         this.penalty_time = penalty_time;
         this.result = result;
         this.obtaining_method = obtaining_method;
+    }
+
+    @Override
+    public String toJson() {
+        return "{\"id\":" + id +
+                ",\"player\":" + player.toJson() +
+                ",\"penalty_time\":\"" + penalty_time +
+                "\",\"result\":\"" + result.name() +
+                "\",\"obtaining_method\":\"" + obtaining_method.name() +
+                "\"}";
     }
 }

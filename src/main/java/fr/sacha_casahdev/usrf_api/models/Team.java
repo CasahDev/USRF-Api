@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Team {
+public class Team implements IJsonable {
     private int id = 0;
     private int fff_id = 0;
     private String name = "";
@@ -19,4 +19,13 @@ public class Team {
     }
 
     public Team() {}
+
+    public String toJson() {
+        return "{" +
+                "\"id\":" + id + "," +
+                "\"fff_id\":" + fff_id + "," +
+                "\"name\":\"" + name + "\"," +
+                "\"club\":" + club.toJson() +
+                "}";
+    }
 }

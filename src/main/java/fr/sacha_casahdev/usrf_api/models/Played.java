@@ -7,7 +7,7 @@ import java.sql.Time;
 
 @Getter
 @Setter
-public class Played {
+public class Played implements IJsonable {
     private int id = 0;
     private Match match = null;
     private Player player = null;
@@ -43,5 +43,27 @@ public class Played {
         this.is_injured = is_injured;
         this.is_capitain = is_capitain;
         this.position = position;
+    }
+
+
+    @Override
+    public String toJson() {
+        return "{" +
+                "\"id\":" + id + "," +
+                "\"match\":" + match.toJson() + "," +
+                "\"player\":" + player.toJson() + "," +
+                "\"jersey_number\":" + jersey_number + "," +
+                "\"entry_time\":\"" + entry_time + "\"," +
+                "\"exit_time\":\"" + exit_time + "\"," +
+                "\"goals\":" + goals + "," +
+                "\"blocked_shots\":" + blocked_shots + "," +
+                "\"on_target_shots\":" + on_target_shots + "," +
+                "\"off_target_shots\":" + off_target_shots + "," +
+                "\"yellow_card\":" + yellow_card + "," +
+                "\"red_card\":" + red_card + "," +
+                "\"is_injured\":" + is_injured + "," +
+                "\"is_capitain\":" + is_capitain + "," +
+                "\"position\":\"" + position + "\"" +
+                "}";
     }
 }
