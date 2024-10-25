@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Time;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -33,5 +34,10 @@ public class History implements IJsonable{
                 ", \"action\":\"" + action + "\"" +
                 ", \"additional_information\":\"" + additional_information + "\"" +
                 "}";
+    }
+
+    @Override
+    public void fromJson(Map<String, Object> json) {
+
     }
 }

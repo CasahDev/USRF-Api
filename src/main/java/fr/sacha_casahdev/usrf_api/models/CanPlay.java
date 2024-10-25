@@ -3,6 +3,8 @@ package fr.sacha_casahdev.usrf_api.models;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Getter
 @Setter
 public class CanPlay implements IJsonable {
@@ -21,5 +23,12 @@ public class CanPlay implements IJsonable {
     @Override
     public String toJson() {
         return "{\"id\":" + id + ",\"player\":" + player.toJson() + ",\"position\":" + position.name() + "}";
+    }
+
+    @Override
+    public void fromJson(Map<String, Object> json) {
+        id = (int) json.get("id");
+        player = (Player) json.get("player");
+        position = (Positions) json.get("position");
     }
 }

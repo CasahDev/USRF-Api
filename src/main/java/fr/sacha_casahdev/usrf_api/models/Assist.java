@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Time;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -28,10 +29,19 @@ public class Assist implements IJsonable {
     public String toJson() {
         return "{" +
                 "\"id\":" + id + "," +
-                "\"player\":" + player.toJson() + "," +
-                "\"assisted_player\":" + assisted_player.toJson() + "," +
+                "\"player\":" + player + "," +
+                "\"assisted_player\":" + assisted_player + "," +
                 "\"assist_time\":\"" + assist_time + "\"," +
                 "\"assist_type\":\"" + assist_type + "\"" +
                 "}";
+    }
+
+    @Override
+    public void fromJson(Map<String, Object> json) {
+        id = (int) json.get("id");
+        player = (Played) json.get("player");
+        assisted_player = (Played) json.get("assisted_player");
+        assist_time = (Time) json.get("assist_time");
+        assist_type = (AssistType) json.get("assist_type");
     }
 }
