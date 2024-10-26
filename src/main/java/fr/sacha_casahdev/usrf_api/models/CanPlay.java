@@ -15,7 +15,8 @@ public class CanPlay implements IJsonable {
     public CanPlay() {
     }
 
-    public CanPlay(Player player, Positions position) {
+    public CanPlay(int id, Player player, Positions position) {
+        this.id = id;
         this.player = player;
         this.position = position;
     }

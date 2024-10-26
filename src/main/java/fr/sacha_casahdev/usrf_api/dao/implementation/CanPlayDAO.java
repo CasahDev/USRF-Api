@@ -78,7 +78,15 @@ public class CanPlayDAO implements ICanPlayDAO {
             stmt.setInt(1, player_id);
             stmt.setString(2, position);
             stmt.executeUpdate();
-            response = ResponseEntity.ok().build();
+
+            int id = stmt.getGeneratedKeys().getInt(1);
+
+            CanPlay canPlay = new CanPlay();
+            canPlay.setId(id);
+            canPlay.setPlayer(new PlayerDAO().getPlayerById(player_id).getBody());
+            canPlay.setPosition(Positions.valueOf(position));
+
+            response = ResponseEntity.ok(canPlay);
         } catch (SQLException e) {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
