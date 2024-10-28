@@ -5,12 +5,14 @@ import fr.sacha_casahdev.usrf_api.dao.interfaces.IAssistDAO;
 import fr.sacha_casahdev.usrf_api.models.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("assistDAO")
 public class AssistDAO implements IAssistDAO {
     Connection conn;
 
