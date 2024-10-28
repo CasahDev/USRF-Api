@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.sql.Time;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -34,5 +35,25 @@ public class MatchHistory implements IJsonable {
                 ",\"time\":\"" + time +
                 "\",\"additional_information\":\"" + additional_information +
                 "\"}";
+    }
+
+    @Override
+    public void fromJson(Map<String, Object> json) {
+        if (json.containsKey("id")) {
+            id = (int) json.get("id");
+        }
+        if (json.containsKey("match")) {
+            match = new Match();
+            match.fromJson((Map<String, Object>) json.get("match"));
+        }
+        if (json.containsKey("event")) {
+            event = MatchEvent.valueOf((String) json.get("event"));
+        }
+        if (json.containsKey("time")) {
+            time = Time.valueOf((String) json.get("time"));
+        }
+        if (json.containsKey("additional_information")) {
+            additional_information = (String) json.get("additional_information");
+        }
     }
 }
