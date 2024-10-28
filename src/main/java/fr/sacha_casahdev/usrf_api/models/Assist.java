@@ -18,7 +18,8 @@ public class Assist implements IJsonable {
     public Assist() {
     }
 
-    public Assist(Played player, Played assisted_player, Time assist_time, AssistType assist_type) {
+    public Assist(int id, Played player, Played assisted_player, Time assist_time, AssistType assist_type) {
+        this.id = id;
         this.player = player;
         this.assisted_player = assisted_player;
         this.assist_time = assist_time;
