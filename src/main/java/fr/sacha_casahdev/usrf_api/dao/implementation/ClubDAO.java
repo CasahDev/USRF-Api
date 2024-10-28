@@ -4,6 +4,7 @@ import fr.sacha_casahdev.usrf_api.dao.DBConnection;
 import fr.sacha_casahdev.usrf_api.dao.interfaces.IClubDAO;
 import fr.sacha_casahdev.usrf_api.models.Club;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("ClubDAO")
 public class ClubDAO implements IClubDAO {
     @Override
     public ResponseEntity<List<Club>> getClubs(int page, int limit) {
