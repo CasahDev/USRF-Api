@@ -6,12 +6,14 @@ import fr.sacha_casahdev.usrf_api.models.GameState;
 import fr.sacha_casahdev.usrf_api.models.Match;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("matchDAO")
 public class MatchDAO implements IMatchDAO {
     Connection conn;
 
