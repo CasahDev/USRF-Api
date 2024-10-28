@@ -5,6 +5,7 @@ import fr.sacha_casahdev.usrf_api.dao.interfaces.ICupDAO;
 import fr.sacha_casahdev.usrf_api.models.Cup;
 import fr.sacha_casahdev.usrf_api.models.Scale;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("cupDAO")
 public class CupDAO implements ICupDAO {
     Connection conn;
 
