@@ -6,6 +6,7 @@ import fr.sacha_casahdev.usrf_api.models.CanPlay;
 import fr.sacha_casahdev.usrf_api.models.Positions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Component("canPlayDAO")
 public class CanPlayDAO implements ICanPlayDAO {
 
     Connection conn;
