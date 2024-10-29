@@ -4,6 +4,7 @@ import fr.sacha_casahdev.usrf_api.dao.DBConnection;
 import fr.sacha_casahdev.usrf_api.dao.interfaces.ITeamDAO;
 import fr.sacha_casahdev.usrf_api.models.Team;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("TeamDAO")
 public class TeamDAO implements ITeamDAO {
     Connection conn;
 
