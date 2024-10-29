@@ -6,12 +6,14 @@ import fr.sacha_casahdev.usrf_api.models.Played;
 import fr.sacha_casahdev.usrf_api.models.Positions;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("playedDAO")
 public class PlayedDAO implements IPlayedDAO {
     Connection conn;
 
