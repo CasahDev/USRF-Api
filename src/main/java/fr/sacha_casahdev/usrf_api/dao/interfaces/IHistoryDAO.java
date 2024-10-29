@@ -3,16 +3,16 @@ package fr.sacha_casahdev.usrf_api.dao.interfaces;
 import fr.sacha_casahdev.usrf_api.models.History;
 import org.springframework.http.ResponseEntity;
 
-import java.util.Map;
+import java.util.List;
 
 public interface IHistoryDAO {
-    ResponseEntity<History> createHistory(Map<String, Object> history);
+    ResponseEntity<History> createHistory(History history);
 
     ResponseEntity<History> getHistory(int id);
 
     ResponseEntity<String> deleteHistory(int id);
 
-    ResponseEntity<History> updateHistory(int id, Map<String, Object> history);
+    ResponseEntity<History> updateHistory(int id, History history);
 
-    ResponseEntity<String> getHistories(int page, int limit);
+    ResponseEntity<List<History>> getHistories(int page, int limit);
 }

@@ -8,31 +8,29 @@ import fr.sacha_casahdev.usrf_api.models.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Time;
-import java.util.Map;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component("historyDAO")
 public class HistoryDAO implements IHistoryDAO {
-    private Connection conn;
+    private final Connection conn;
 
     public HistoryDAO() {
         this.conn = DBConnection.getConnection();
     }
 
     @Override
-    public ResponseEntity<History> createHistory(Map<String, Object> history) {
+    public ResponseEntity<History> createHistory(History history) {
         String query = "INSERT INTO history (author, created_at, action, additional_information) VALUES (?, ?, ?, ?)";
 
         ResponseEntity<History> response;
 
         try {
-            User author = (User) history.get("author");
-            Time createdAt = (Time) history.get("created_at");
-            ActionType action = (ActionType) history.get("action");
-            String additionalInformation = (String) history.get("add²itional_information");
+            User author = history.getAuthor();
+            Time createdAt = history.getCreated_at();
+            ActionType action = history.getAction();
+            String additionalInformation = history.getAdditional_information();
 
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, author.getId());
@@ -63,21 +61,16 @@ public class HistoryDAO implements IHistoryDAO {
 
             ResultSet result = stmt.executeQuery();
 
-            History history = new History();
+            List<History> histories = HistoryListFromResultSet(result);
 
-            if (result.next()) {
-                history.setId(result.getInt("id"));
-                history.setAuthor(new UserDAO().getUserById(result.getInt("author")).getBody());
-                history.setCreated_at(result.getTime("created_at"));
-                history.setAction(ActionType.valueOf(result.getString("action")));
-                history.setAdditional_information(result.getString("additional_information"));
+            if (histories.isEmpty()) {
+                response = ResponseEntity.status(404).header("message", "History not found").body(null);
+            } else {
+                response = ResponseEntity.status(200).header("message", "History retrieved").body(histories.get(0));
             }
-
-            response = ResponseEntity.status(200).header("message", "History retrieved").body(history);
-
         } catch (Exception e) {
             response = ResponseEntity.status(500).header("message", "Internal server error", e.getMessage()).
-            body(null);
+                    body(null);
         }
 
         return response;
@@ -100,15 +93,15 @@ public class HistoryDAO implements IHistoryDAO {
     }
 
     @Override
-    public ResponseEntity<History> updateHistory(int id, Map<String, Object> history) {
+    public ResponseEntity<History> updateHistory(int id, History history) {
         try {
             String query = "UPDATE history SET author = ?, created_at = ?, action = ?, additional_information = ? WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
 
-            User author = (User) history.get("author");
-            Time createdAt = (Time) history.get("created_at");
-            ActionType action = (ActionType) history.get("action");
-            String additionalInformation = (String) history.get("additional_information");
+            User author = history.getAuthor();
+            Time createdAt = history.getCreated_at();
+            ActionType action = history.getAction();
+            String additionalInformation = history.getAdditional_information();
 
             stmt.setInt(1, author.getId());
             stmt.setTime(2, createdAt);
@@ -132,7 +125,7 @@ public class HistoryDAO implements IHistoryDAO {
     }
 
     @Override
-    public ResponseEntity<String> getHistories(int page, int limit) {
+    public ResponseEntity<List<History>> getHistories(int page, int limit) {
         try {
             String query = "SELECT * FROM history LIMIT ? OFFSET ?";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -141,15 +134,28 @@ public class HistoryDAO implements IHistoryDAO {
 
             ResultSet result = stmt.executeQuery();
 
-            StringBuilder histories = new StringBuilder();
+            List<History> histories = HistoryListFromResultSet(result);
 
-            while (result.next()) {
-                histories.append("History{id=").append(result.getInt("id")).append(", author=").append(new UserDAO().getUserById(result.getInt("author")).getBody().toString()).append(", created_at=").append(result.getTime("created_at")).append(", action=").append(ActionType.valueOf(result.getString("action"))).append(", additional_information='").append(result.getString("additional_information")).append("'}\n");
-            }
-
-            return ResponseEntity.status(200).header("message", "Histories retrieved").body(histories.toString());
+            return ResponseEntity.status(200).header("message", "Histories retrieved").body(histories);
         } catch (Exception e) {
             return ResponseEntity.status(500).header("message", "Internal server error", e.getMessage()).body(null);
         }
+    }
+
+    private List<History> HistoryListFromResultSet(ResultSet result) throws SQLException {
+        List<History> histories = new ArrayList<>();
+
+        while (result.next()) {
+            History history = new History();
+            history.setId(result.getInt("id"));
+            history.setAuthor(new UserDAO().getUserById(result.getInt("author")).getBody());
+            history.setCreated_at(result.getTime("created_at"));
+            history.setAction(ActionType.valueOf(result.getString("action")));
+            history.setAdditional_information(result.getString("additional_information"));
+
+            histories.add(history);
+        }
+
+        return histories;
     }
 }

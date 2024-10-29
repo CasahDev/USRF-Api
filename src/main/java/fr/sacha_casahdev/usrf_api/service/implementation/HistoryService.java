@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
+import java.util.List;
 
 @Component("historyService")
 public class HistoryService implements IHistoryService {
@@ -21,7 +21,7 @@ public class HistoryService implements IHistoryService {
     }
 
     @Override
-    public ResponseEntity<History> createHistory(Map<String, Object> history) {
+    public ResponseEntity<History> createHistory(History history) {
         return dao.createHistory(history);
     }
 
@@ -36,12 +36,12 @@ public class HistoryService implements IHistoryService {
     }
 
     @Override
-    public ResponseEntity<History> updateHistory(int id, Map<String, Object> history) {
+    public ResponseEntity<History> updateHistory(int id, History history) {
         return dao.updateHistory(id, history);
     }
 
     @Override
-    public ResponseEntity<String> getHistories(int page, int limit) {
+    public ResponseEntity<List<History>> getHistories(int page, int limit) {
         return dao.getHistories(page, limit);
     }
 }
