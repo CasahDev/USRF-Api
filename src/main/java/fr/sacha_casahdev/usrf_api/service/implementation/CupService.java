@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 public class CupService implements ICupService {
@@ -38,12 +37,12 @@ public class CupService implements ICupService {
     }
 
     @Override
-    public ResponseEntity<Cup> addCup(Map<String, Object> cup) {
+    public ResponseEntity<Cup> addCup(Cup cup) {
         return dao.addCup(cup);
     }
 
     @Override
-    public ResponseEntity<Cup> updateCup(int id, Map<String, Object> cup) {
+    public ResponseEntity<Cup> updateCup(int id, Cup cup) {
         return dao.updateCup(id, cup);
     }
 

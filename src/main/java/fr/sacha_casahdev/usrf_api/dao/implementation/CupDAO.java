@@ -12,7 +12,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component("cupDAO")
 public class CupDAO implements ICupDAO {
@@ -102,24 +101,20 @@ public class CupDAO implements ICupDAO {
     }
 
     @Override
-    public ResponseEntity<Cup> addCup(Map<String, Object> cup) {
+    public ResponseEntity<Cup> addCup(Cup cup) {
         ResponseEntity<Cup> response = null;
 
         try {
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO cups (name, scale) VALUES (?, ?)");
-            stmt.setString(1, (String) cup.get("name"));
-            stmt.setString(2, (String) cup.get("scale"));
+            stmt.setString(1, cup.getName());
+            stmt.setString(2, cup.getScale().name());
 
             stmt.executeUpdate();
 
             int id = stmt.getGeneratedKeys().getInt(1);
+            cup.setId(id);
 
-            Cup c = new Cup();
-            c.setId(id);
-            c.setName((String) cup.get("name"));
-            c.setScale(Scale.valueOf((String) cup.get("scale")));
-
-            response = ResponseEntity.ok(c);
+            response = ResponseEntity.ok(cup);
         } catch (Exception e) {
             response = ResponseEntity.internalServerError().build();
         }
@@ -128,23 +123,18 @@ public class CupDAO implements ICupDAO {
     }
 
     @Override
-    public ResponseEntity<Cup> updateCup(int id, Map<String, Object> cup) {
+    public ResponseEntity<Cup> updateCup(int id, Cup cup) {
         ResponseEntity<Cup> response = null;
 
         try {
             PreparedStatement stmt = conn.prepareStatement("UPDATE cups SET name = ?, scale = ? WHERE id = ?");
-            stmt.setString(1, (String) cup.get("name"));
-            stmt.setString(2, (String) cup.get("scale"));
-            stmt.setInt(3, (int) cup.get("id"));
+            stmt.setString(1, cup.getName());
+            stmt.setString(2, cup.getScale().name());
+            stmt.setInt(3, cup.getId());
 
             stmt.executeUpdate();
 
-            Cup c = new Cup();
-            c.setId(id);
-            c.setName((String) cup.get("name"));
-            c.setScale(Scale.valueOf((String) cup.get("scale")));
-
-            response = ResponseEntity.ok(c);
+            response = ResponseEntity.ok(cup);
         } catch (Exception e) {
             response = ResponseEntity.internalServerError().build();
         }
