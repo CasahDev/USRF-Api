@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Time;
 import java.util.List;
-import java.util.Map;
 
 @Component("matchService")
 public class MatchService implements IMatchService {
@@ -33,12 +32,12 @@ public class MatchService implements IMatchService {
     }
 
     @Override
-    public ResponseEntity<Match> addMatch(Map<String, Object> match) {
+    public ResponseEntity<Match> addMatch(Match match) {
         return dao.addMatch(match);
     }
 
     @Override
-    public ResponseEntity<Match> updateMatch(int id, Map<String, Object> match) {
+    public ResponseEntity<Match> updateMatch(int id, Match match) {
         return dao.updateMatch(id, match);
     }
 

@@ -5,13 +5,12 @@ import org.springframework.http.ResponseEntity;
 
 import java.sql.Time;
 import java.util.List;
-import java.util.Map;
 
 public interface IMatchDAO {
     ResponseEntity<Match> getMatchById(int id);
     ResponseEntity<List<Match>> getMatches(int page, int limit);
-    ResponseEntity<Match> addMatch(Map<String, Object> match);
-    ResponseEntity<Match> updateMatch(int id, Map<String, Object> match);
+    ResponseEntity<Match> addMatch(Match match);
+    ResponseEntity<Match> updateMatch(int id, Match match);
     ResponseEntity<String> deleteMatch(int id);
     ResponseEntity<List<Match>> getMatchesByTeam(int teamId, int page, int limit);
     ResponseEntity<List<Match>> getMatchesCup(int page, int limit);

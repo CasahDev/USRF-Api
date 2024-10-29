@@ -78,7 +78,7 @@ public class MatchDAO implements IMatchDAO {
     }
 
     @Override
-    public ResponseEntity<Match> addMatch(Map<String, Object> match) {
+    public ResponseEntity<Match> addMatch(Match match) {
         ResponseEntity<Match> response = null;
 
         try {
@@ -86,25 +86,24 @@ public class MatchDAO implements IMatchDAO {
                     "(team1, team2, score1, score2, address, date, is_home, coach, state, started_time, cup) " +
                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement preparedStatement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, (int) match.get("team"));
-            preparedStatement.setInt(2, (int) match.get("opponent"));
-            preparedStatement.setInt(3, (int) match.get("score1"));
-            preparedStatement.setInt(4, (int) match.get("score2"));
-            preparedStatement.setString(5, (String) match.get("address"));
-            preparedStatement.setTime(6, Time.valueOf((String) match.get("date")));
-            preparedStatement.setBoolean(7, (boolean) match.get("is_home"));
-            preparedStatement.setString(8, (String) match.get("coach"));
-            preparedStatement.setString(9, ((String) match.get("state")).toUpperCase());
-            preparedStatement.setTime(10, Time.valueOf((String) match.get("started_time")));
-            preparedStatement.setInt(11, (int) match.get("cup"));
+            preparedStatement.setInt(1, match.getTeam1().getId());
+            preparedStatement.setInt(2, match.getTeam2().getId());
+            preparedStatement.setInt(3, match.getScore1());
+            preparedStatement.setInt(4, match.getScore2());
+            preparedStatement.setString(5, match.getAddress());
+            preparedStatement.setTime(6, match.getDate());
+            preparedStatement.setBoolean(7, match.is_home());
+            preparedStatement.setString(8, match.getCoach());
+            preparedStatement.setString(9, match.getState().name());
+            preparedStatement.setTime(10, match.getStarted_time());
+            preparedStatement.setInt(11, match.getCup().getId());
             preparedStatement.executeUpdate();
 
             ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
             if (generatedKeys.next()) {
                 int id = generatedKeys.getInt(1);
-                Match m = MatchFromMap(match);
-                m.setId(id);
-                response = ResponseEntity.ok(m);
+                match.setId(id);
+                response = ResponseEntity.ok(match);
             } else {
                 response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
@@ -115,24 +114,8 @@ public class MatchDAO implements IMatchDAO {
         return response;
     }
 
-    private Match MatchFromMap(Map<String, Object> match) {
-        Match m = new Match();
-        m.setTeam1(new TeamDAO().getTeamById((int) match.get("team1")).getBody());
-        m.setTeam2(new TeamDAO().getTeamById((int) match.get("team2")).getBody());
-        m.setScore1((int) match.get("score1"));
-        m.setScore2((int) match.get("score2"));
-        m.setCup(new CupDAO().getCupById((int) match.get("cup")).getBody());
-        m.setDate(Time.valueOf((String) match.get("date")));
-        m.setAddress((String) match.get("address"));
-        m.set_home((boolean) match.get("is_home"));
-        m.setCoach((String) match.get("coach"));
-        m.setState(GameState.valueOf(((String) match.get("state")).toUpperCase()));
-
-        return m;
-    }
-
     @Override
-    public ResponseEntity<Match> updateMatch(int id, Map<String, Object> match) {
+    public ResponseEntity<Match> updateMatch(int id, Match match) {
         ResponseEntity<Match> response = null;
 
         try {
@@ -141,23 +124,21 @@ public class MatchDAO implements IMatchDAO {
                     "state = ?, started_time = ?, cup = ? " +
                     "WHERE id = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, (int) match.get("team"));
-            preparedStatement.setInt(2, (int) match.get("opponent"));
-            preparedStatement.setInt(3, (int) match.get("score1"));
-            preparedStatement.setInt(4, (int) match.get("score2"));
-            preparedStatement.setString(5, (String) match.get("address"));
-            preparedStatement.setTime(6, Time.valueOf((String) match.get("date")));
-            preparedStatement.setBoolean(7, (boolean) match.get("is_home"));
-            preparedStatement.setString(8, (String) match.get("coach"));
-            preparedStatement.setString(9, ((String) match.get("state")).toUpperCase());
-            preparedStatement.setTime(10, Time.valueOf((String) match.get("started_time")));
-            preparedStatement.setInt(11, (int) match.get("cup"));
-            preparedStatement.setInt(12, (int) match.get("id"));
+            preparedStatement.setInt(1, match.getTeam1().getId());
+            preparedStatement.setInt(2, match.getTeam2().getId());
+            preparedStatement.setInt(3, match.getScore1());
+            preparedStatement.setInt(4, match.getScore2());
+            preparedStatement.setString(5, match.getAddress());
+            preparedStatement.setTime(6, match.getDate());
+            preparedStatement.setBoolean(7, match.is_home());
+            preparedStatement.setString(8, match.getCoach());
+            preparedStatement.setString(9, match.getState().name());
+            preparedStatement.setTime(10, match.getStarted_time());
+            preparedStatement.setInt(11, match.getCup().getId());
+            preparedStatement.setInt(12, id);
             preparedStatement.executeUpdate();
 
-            Match m =  MatchFromMap(match);
-            m.setId((int) match.get("id"));
-            response = ResponseEntity.ok(m);
+            response = ResponseEntity.ok(match);
         } catch (SQLException e) {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
