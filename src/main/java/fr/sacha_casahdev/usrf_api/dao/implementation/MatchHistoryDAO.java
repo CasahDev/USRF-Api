@@ -2,6 +2,7 @@ package fr.sacha_casahdev.usrf_api.dao.implementation;
 
 import fr.sacha_casahdev.usrf_api.dao.DBConnection;
 import fr.sacha_casahdev.usrf_api.dao.interfaces.IMatchHistoryDAO;
+import fr.sacha_casahdev.usrf_api.models.GameState;
 import fr.sacha_casahdev.usrf_api.models.Match;
 import fr.sacha_casahdev.usrf_api.models.MatchEvent;
 import fr.sacha_casahdev.usrf_api.models.MatchHistory;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component("matchHistoryDAO")
 public class MatchHistoryDAO implements IMatchHistoryDAO {
@@ -89,30 +89,30 @@ public class MatchHistoryDAO implements IMatchHistoryDAO {
     }
 
     @Override
-    public ResponseEntity<MatchHistory> createMatchHistory(Map<String, Object> matchHistory) {
+    public ResponseEntity<MatchHistory> createMatchHistory(MatchHistory matchHistory) {
         ResponseEntity<MatchHistory> response;
 
         try {
             String query = "INSERT INTO match_histories (match_id, event, time, additionnal_informations) VALUES (?, ?, ?, ?)";
             PreparedStatement stmt = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            stmt.setInt(1, (int) matchHistory.get("match_id"));
-            stmt.setString(2, (String) matchHistory.get("event"));
-            stmt.setTime(3, (Time) matchHistory.get("time"));
-            stmt.setString(4, (String) matchHistory.get("additionnal_informations"));
+            stmt.setInt(1, matchHistory.getMatch().getId());
+            stmt.setString(2, matchHistory.getEvent().name());
+            stmt.setTime(3, matchHistory.getTime());
+            stmt.setString(4, matchHistory.getAdditional_information());
 
             stmt.executeUpdate();
 
             ResultSet rs = stmt.getGeneratedKeys();
             rs.next();
 
-            Match match = new MatchDAO().getMatchById((int) matchHistory.get("match_id")).getBody();
+            Match match = new MatchDAO().getMatchById(matchHistory.getMatch().getId()).getBody();
 
             MatchHistory newMatchHistory = new MatchHistory(
                     rs.getInt(1),
                     match,
-                    MatchEvent.valueOf((String) matchHistory.get("event")),
-                    (Time) matchHistory.get("time"),
-                    (String) matchHistory.get("additionnal_informations")
+                    matchHistory.getEvent(),
+                    matchHistory.getTime(),
+                    matchHistory.getAdditional_information()
             );
 
             response = ResponseEntity.ok(newMatchHistory);
@@ -125,31 +125,21 @@ public class MatchHistoryDAO implements IMatchHistoryDAO {
     }
 
     @Override
-    public ResponseEntity<MatchHistory> updateMatchHistory(int id, Map<String, Object> matchHistory) {
+    public ResponseEntity<MatchHistory> updateMatchHistory(int id, MatchHistory matchHistory) {
         ResponseEntity<MatchHistory> response;
 
         try {
             String query = "UPDATE match_histories SET match_id = ?, event = ?, time = ?, additionnal_informations = ? WHERE id = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setInt(1, (int) matchHistory.get("match_id"));
-            stmt.setString(2, (String) matchHistory.get("event"));
-            stmt.setTime(3, (Time) matchHistory.get("time"));
-            stmt.setString(4, (String) matchHistory.get("additionnal_informations"));
+            stmt.setInt(1, matchHistory.getMatch().getId());
+            stmt.setString(2, matchHistory.getEvent().name());
+            stmt.setTime(3, matchHistory.getTime());
+            stmt.setString(4, matchHistory.getAdditional_information());
             stmt.setInt(5, id);
 
             stmt.executeUpdate();
 
-            Match match = new MatchDAO().getMatchById((int) matchHistory.get("match_id")).getBody();
-
-            MatchHistory updatedMatchHistory = new MatchHistory(
-                    id,
-                    match,
-                    MatchEvent.valueOf((String) matchHistory.get("event")),
-                    (Time) matchHistory.get("time"),
-                    (String) matchHistory.get("additionnal_informations")
-            );
-
-            response = ResponseEntity.ok(updatedMatchHistory);
+            response = ResponseEntity.ok(matchHistory);
         }
         catch (Exception e) {
             response = ResponseEntity.badRequest().build();
@@ -252,14 +242,24 @@ public class MatchHistoryDAO implements IMatchHistoryDAO {
         ResponseEntity<MatchHistory> response;
 
         try {
-            String query = "SELECT * FROM match_histories WHERE match_id = ? ORDER BY id DESC LIMIT 1";
+            String query = "SELECT * FROM match_histories as mh INNER JOIN matches as m on mh.match_id = m.id WHERE mh.match_id = ? ORDER BY id DESC LIMIT 1";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, matchId);
 
             ResultSet rs = stmt.executeQuery();
             rs.next();
 
-            Match match = new MatchDAO().getMatchById(rs.getInt("match_id")).getBody();
+            Match match = new Match();
+            match.setId(rs.getInt("match_id"));
+            match.setTeam1(new TeamDAO().getTeamById(rs.getInt("team1_id")).getBody());
+            match.setTeam2(new TeamDAO().getTeamById(rs.getInt("team2_id")).getBody());
+            match.setScore1(rs.getInt("score1"));
+            match.setScore2(rs.getInt("score2"));
+            match.setDate(rs.getTime("date"));
+            match.set_home(rs.getBoolean("is_home"));
+            match.setCup(new CupDAO().getCupById(rs.getInt("cup_id")).getBody());
+            match.setAddress(rs.getString("address"));
+            match.setState(GameState.valueOf(rs.getString("state")));
 
             MatchHistory matchHistory = new MatchHistory(
                     rs.getInt("id"),

@@ -1,6 +1,5 @@
 package fr.sacha_casahdev.usrf_api.service.implementation;
 
-import fr.sacha_casahdev.usrf_api.dao.interfaces.IHistoryDAO;
 import fr.sacha_casahdev.usrf_api.dao.interfaces.IMatchHistoryDAO;
 import fr.sacha_casahdev.usrf_api.models.MatchHistory;
 import fr.sacha_casahdev.usrf_api.service.interfaces.IMatchHistoryService;
@@ -10,12 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component("matchHistoryService")
 public class MatchHistoryService implements IMatchHistoryService{
     @Qualifier("matchHistoryDAO")
-    private IMatchHistoryDAO dao;
+    private final IMatchHistoryDAO dao;
 
     @Autowired
     public MatchHistoryService(IMatchHistoryDAO dao) {
@@ -34,12 +32,12 @@ public class MatchHistoryService implements IMatchHistoryService{
     }
 
     @Override
-    public ResponseEntity<MatchHistory> createMatchHistory(Map<String, Object> matchHistory) {
+    public ResponseEntity<MatchHistory> createMatchHistory(MatchHistory matchHistory) {
         return dao.createMatchHistory(matchHistory);
     }
 
     @Override
-    public ResponseEntity<MatchHistory> updateMatchHistory(int id, Map<String, Object> matchHistory) {
+    public ResponseEntity<MatchHistory> updateMatchHistory(int id, MatchHistory matchHistory) {
         return dao.updateMatchHistory(id, matchHistory);
     }
 
