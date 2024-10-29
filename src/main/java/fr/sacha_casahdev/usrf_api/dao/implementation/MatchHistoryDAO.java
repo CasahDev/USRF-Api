@@ -6,12 +6,14 @@ import fr.sacha_casahdev.usrf_api.models.Match;
 import fr.sacha_casahdev.usrf_api.models.MatchEvent;
 import fr.sacha_casahdev.usrf_api.models.MatchHistory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("matchHistoryDAO")
 public class MatchHistoryDAO implements IMatchHistoryDAO {
     Connection conn;
 
