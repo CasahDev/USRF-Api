@@ -40,6 +40,9 @@ public class AssistDAO implements IAssistDAO {
 
             ps.executeQuery();
 
+            int id = ps.getGeneratedKeys().getInt(1);
+            assist.setId(id);
+
             response = ResponseEntity.ok(assist);
         } catch (SQLException e) {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
