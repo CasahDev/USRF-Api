@@ -4,7 +4,6 @@ import fr.sacha_casahdev.usrf_api.models.Club;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.Map;
 
 public interface IClubDAO {
     /// Get all clubs
@@ -28,7 +27,7 @@ public interface IClubDAO {
     /// @param id The id of the club
     /// @param club The new club
     /// @return A status code (200, 404, 500)
-    ResponseEntity<String> updateClub(int id, Map<String, Object> club);
+    ResponseEntity<String> updateClub(int id, Club club);
 
     /// Delete a club
     /// @param id The id of the club
@@ -38,5 +37,5 @@ public interface IClubDAO {
     /// Create a club
     /// @param club The new club
     /// @return The new club with a status code (201, 500)
-    ResponseEntity<Club> createClub(Map<String, Object> club);
+    ResponseEntity<Club> createClub(Club club);
 }

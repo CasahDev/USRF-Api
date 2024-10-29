@@ -1,6 +1,5 @@
 package fr.sacha_casahdev.usrf_api.service.implementation;
 
-import fr.sacha_casahdev.usrf_api.dao.implementation.ClubDAO;
 import fr.sacha_casahdev.usrf_api.dao.interfaces.IClubDAO;
 import fr.sacha_casahdev.usrf_api.models.Club;
 import fr.sacha_casahdev.usrf_api.service.interfaces.IClubService;
@@ -10,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component("clubService")
 public class ClubService implements IClubService {
@@ -38,7 +36,7 @@ public class ClubService implements IClubService {
     }
 
     @Override
-    public ResponseEntity<String> updateClub(int id, Map<String, Object> club) {
+    public ResponseEntity<String> updateClub(int id, Club club) {
         return dao.updateClub(id, club);
     }
 
@@ -48,7 +46,7 @@ public class ClubService implements IClubService {
     }
 
     @Override
-    public ResponseEntity<Club> createClub(Map<String, Object> club) {
+    public ResponseEntity<Club> createClub(Club club) {
         return dao.createClub(club);
     }
 }

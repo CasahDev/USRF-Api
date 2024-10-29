@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Component("ClubDAO")
 public class ClubDAO implements IClubDAO {
@@ -120,7 +119,7 @@ public class ClubDAO implements IClubDAO {
     }
 
     @Override
-    public ResponseEntity<String> updateClub(int id, Map<String, Object> club) {
+    public ResponseEntity<String> updateClub(int id, Club club) {
         ResponseEntity<String> response;
 
         try {
@@ -131,8 +130,8 @@ public class ClubDAO implements IClubDAO {
             }
 
             PreparedStatement stmt = conn.prepareStatement("UPDATE club SET name = ?, logo_url = ? WHERE id = ?");
-            stmt.setString(1, (String) club.get("name"));
-            stmt.setString(2, (String) club.get("logo_url"));
+            stmt.setString(1, club.getName());
+            stmt.setString(2, club.getLogoUrl());
             stmt.setInt(3, id);
 
             int rows = stmt.executeUpdate();
@@ -192,7 +191,7 @@ public class ClubDAO implements IClubDAO {
     }
 
     @Override
-    public ResponseEntity<Club> createClub(Map<String, Object> club) {
+    public ResponseEntity<Club> createClub(Club club) {
         ResponseEntity<Club> response;
 
         try {
@@ -203,9 +202,9 @@ public class ClubDAO implements IClubDAO {
             }
 
             PreparedStatement stmt = conn.prepareStatement("INSERT INTO club (id, name, logo_url) VALUES (?, ?, ?)");
-            stmt.setInt(1, (int) club.get("id"));
-            stmt.setString(2, (String) club.get("name"));
-            stmt.setString(3, (String) club.get("logo_url"));
+            stmt.setInt(1, club.getId());
+            stmt.setString(2, club.getName());
+            stmt.setString(3, club.getLogoUrl());
 
             int rows = stmt.executeUpdate();
 
@@ -219,15 +218,10 @@ public class ClubDAO implements IClubDAO {
                 throw new RuntimeException("Club not created");
             }
 
-            Club newClub = new Club();
-            newClub.setId(rs.getInt(1));
-            newClub.setName((String) club.get("name"));
-            newClub.setLogoUrl((String) club.get("logo_url"));
-
             response = ResponseEntity
                     .ok()
                     .header("Content-Type", "application/json")
-                    .body(newClub);
+                    .body(club);
         } catch (Exception e) {
             response = ResponseEntity
                     .status(500)
