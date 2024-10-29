@@ -201,8 +201,7 @@ public class ClubDAO implements IClubDAO {
                 throw new RuntimeException("Internal server error");
             }
 
-            PreparedStatement stmt = conn.prepareStatement("INSERT INTO club (id, name, logo_url) VALUES (?, ?, ?)");
-            stmt.setInt(1, club.getId());
+            PreparedStatement stmt = conn.prepareStatement("INSERT INTO club (name, logo_url) VALUES (?, ?, ?)");
             stmt.setString(2, club.getName());
             stmt.setString(3, club.getLogoUrl());
 
@@ -212,11 +211,14 @@ public class ClubDAO implements IClubDAO {
                 throw new RuntimeException("Club not created");
             }
 
-            ResultSet rs = stmt.getGeneratedKeys();
+            ResultSet rs = stmt.executeQuery();
 
             if (!rs.next()) {
                 throw new RuntimeException("Club not created");
             }
+
+            int id = stmt.getGeneratedKeys().getInt(1);
+            club.setId(id);
 
             response = ResponseEntity
                     .ok()

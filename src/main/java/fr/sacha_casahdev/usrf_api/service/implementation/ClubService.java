@@ -12,7 +12,7 @@ import java.util.List;
 
 @Component("clubService")
 public class ClubService implements IClubService {
-    @Qualifier("clubDAO")
+    @Qualifier("ClubDAO")
     private final IClubDAO dao;
 
     @Autowired
