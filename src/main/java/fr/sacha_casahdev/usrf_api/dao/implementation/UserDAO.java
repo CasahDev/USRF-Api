@@ -4,6 +4,7 @@ import fr.sacha_casahdev.usrf_api.dao.DBConnection;
 import fr.sacha_casahdev.usrf_api.dao.interfaces.IUserDAO;
 import fr.sacha_casahdev.usrf_api.models.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Component("userDAO")
 public class UserDAO implements IUserDAO {
     @Override
     public ResponseEntity<User> getUserById(int id) {
