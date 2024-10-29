@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Map;
 
 @Component("assistService")
 public class AssistService implements IAssistService {
@@ -22,7 +21,7 @@ public class AssistService implements IAssistService {
     }
 
     @Override
-    public ResponseEntity<Assist> addAssists(Map<String, Object> assist) {
+    public ResponseEntity<Assist> addAssist(Assist assist) {
         return dao.addAssists(assist);
     }
 
@@ -32,8 +31,8 @@ public class AssistService implements IAssistService {
     }
 
     @Override
-    public ResponseEntity<List<Assist>> getAssistsByUserAndGame(int idUser, int idGame) {
-        return dao.getAssistsByUserAndGame(idUser, idGame);
+    public ResponseEntity<List<Assist>> getAssistsByUserAndGame(int idUser, int idGame, int page, int limit) {
+        return dao.getAssistsByUserAndGame(idUser, idGame, page, limit);
     }
 
     @Override
@@ -52,7 +51,7 @@ public class AssistService implements IAssistService {
     }
 
     @Override
-    public ResponseEntity<String> updateAssists(int idAssist, Map<String, Object> assist) {
+    public ResponseEntity<String> updateAssists(int idAssist, Assist assist) {
         return dao.updateAssists(idAssist, assist);
     }
 
@@ -64,5 +63,10 @@ public class AssistService implements IAssistService {
     @Override
     public ResponseEntity<String> removeLastAssist(int game_id) {
         return dao.removeLastAssist(game_id);
+    }
+
+    @Override
+    public ResponseEntity<Assist> getAssistById(int assistId) {
+        return dao.getAssistById(assistId);
     }
 }

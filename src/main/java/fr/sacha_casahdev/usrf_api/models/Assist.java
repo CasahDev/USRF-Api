@@ -45,4 +45,8 @@ public class Assist implements IJsonable {
         assist_time = (Time) json.get("assist_time");
         assist_type = (AssistType) json.get("assist_type");
     }
+
+    public Match getMatch() {
+        return player.getMatch();
+    }
 }
