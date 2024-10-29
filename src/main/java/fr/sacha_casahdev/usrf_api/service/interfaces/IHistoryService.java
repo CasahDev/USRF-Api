@@ -1,11 +1,12 @@
-package fr.sacha_casahdev.usrf_api.dao.interfaces;
+package fr.sacha_casahdev.usrf_api.service.interfaces;
 
 import fr.sacha_casahdev.usrf_api.models.History;
 import org.springframework.http.ResponseEntity;
 
 import java.util.Map;
 
-public interface IHistoryDAO {
+public interface IHistoryService {
+
     ResponseEntity<History> createHistory(Map<String, Object> history);
 
     ResponseEntity<History> getHistory(int id);

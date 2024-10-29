@@ -6,6 +6,7 @@ import fr.sacha_casahdev.usrf_api.models.ActionType;
 import fr.sacha_casahdev.usrf_api.models.History;
 import fr.sacha_casahdev.usrf_api.models.User;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.sql.ResultSet;
 import java.sql.Time;
 import java.util.Map;
 
+@Component("historyDAO")
 public class HistoryDAO implements IHistoryDAO {
     private Connection conn;
 
